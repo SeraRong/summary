@@ -1,12 +1,11 @@
 Javascript 函数声明 Vs 函数表达式
 ==================
-@[Web前端|JavaScript]
 
 javascript中有2种主要方式来定义一个函数，即：通过声明和通过表达式。
 
 在很多应用中，他们略有不同。
 
-**函数声明：**
+###函数声明：
 ```javascript
 var sys = require('sys');
 
@@ -17,7 +16,7 @@ function helloWorld() {
 helloWorld();
 ```
 
-**函数表达式：**
+###函数表达式：
 ```javascript
 var sys = require('sys');
 
@@ -31,7 +30,7 @@ helloWorld();
 上面结果都是hello world，
 区别在什么地方呢？
 
-**区别：**
+###区别：
 
 - 1、函数申明会在代码执行之前被加载到作用域；函数表达式在代码执行到那一行时才会定义；也就是说函数声明所有代码被执行之前运行，函数表达式仅当解释器到达代码时候才运行。
 
