@@ -39,7 +39,7 @@ ECMAScript中**所有函数的参数**都是**按值传递**的。
 ####5、类型检测
 
 `typeof`可确定一个变量是字符串string、数值number、布尔值boolean，还是undefined，但是变量的值是一个对象或null，则返回“object”。
-```javacript
+```javascript
 var s = "aaaaaaaaa";
 var b = true;
 var i = 22;
@@ -58,7 +58,7 @@ alert(typeof f); //function
 ```
 
 `instanceof`检测具体是哪种引用类型。
-```javacript
+```javascript
 alert(person instanceof Object); //变量person是Object吗？
 alert(colors instanceof Array); //变量colors是Array吗？
 alert(pattern instanceof RegExp); //变量pattern是RegExp吗？
