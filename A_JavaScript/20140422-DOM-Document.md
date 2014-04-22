@@ -68,7 +68,7 @@ document.domain = "bbs.baidu.com";
 
 ###3、操作方法
 
-- **getElementById（）**方法
+- **getElementById()**方法
 
 参数：要取得的元素id。找到相应的元素则返回该元素，否则返回null。如果页面中有多个元素的id相同，该方法只返回文档中第一次出现的元素。
 ```html
@@ -88,7 +88,7 @@ var div = document.getElementById("mydiv");
 <!-- 在使用document.getElementById("MyElement"),IE7及以前版本会取得对input元素的引用，而不是对div元素的引用 -->
 ```
 
-- **getElementByTagName（）**方法
+- **getElementByTagName()**方法
 
 参数：要取得的元素标签名。返回包含零或者多个元素的NodeList。在HTML文档中，返回一个HTMLCollection对象，作为一个动态集合，类似NodeList。
 ```javascript
@@ -106,11 +106,11 @@ alert(iamges.namedItem("myimage").src);
 alert(images["myimage"].src);  
 ```
 
-- **getElementByName（）**方法
+- **getElementByName()**方法
 
-类似getElementByTagName（）方法，返回一个HTMLCollection对象。
+类似getElementByTagName()方法，返回一个HTMLCollection对象。
 
-- **createElement（）**方法
+- **createElement()**方法
 
 使用document.createElement()方法可以创建新元素。参数：要创建元素的标签名。
 ```javascript
@@ -123,14 +123,14 @@ div.className = "style";
 document.body.appendChild(div);  
 ```
 
-- **write（）**方法
+- **write()**方法
 
 文档写入。参数：要写入到输出流的文本字符串。
 ```javascript
 // 写入文本内容  
 document.write(new Date());  
 ```
-此外，还可以使用write（）方法动态的包含外部资源，例如Javascript文件等。在包含Javascript文件时，必须注意不能直接包含字符串<script>，这样会导致该字符串被解释为脚本块的结束，后面的代码将无法执行。
+此外，还可以使用write()方法动态的包含外部资源，例如Javascript文件等。在包含Javascript文件时，必须注意不能直接包含字符串<script>，这样会导致该字符串被解释为脚本块的结束，后面的代码将无法执行。
 ```javascript
 // 动态加载脚本，但是直接写</script>是错误的，需要用到转义<\/script>  
 document.write("<script type=\"text/javascript\" src=\"file.js\">"+"</script>");  ```
