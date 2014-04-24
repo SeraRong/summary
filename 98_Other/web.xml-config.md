@@ -16,12 +16,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 </web-app>  
 ```
 ###web.xml中常用的标签及其功能
-###1、\<description\>，<display-name\>，<icon\>
-- **<description>项目描述</discription>**  对项目做出描述。
-- **<display-name>项目名称</display-name>** 定义项目的名称。
-- **<icon>** icon元素包含small-icon和large-icon两个子元素，用来指定web站台中小图标和大图标的路径。
-    - **<small-icon>/路径/smallicon.gif</small-icon>**：small-icon元素应指向web站台中某个小图标的路径，大小为16 X 16 pixel,但是图象文件必须为GIF或JPEG格式,扩展名必须为：.gif或 .jpg。
-    - **<large-icon>/路径/largeicon-jpg</large-icon>**：large-icon元素应指向web站台中某个大图表路径，大小为32 X 32 pixel，但是图象文件必须为GIF或JPEG的格式，扩展名必须为： gif 或jpg。
+###1、\<description\>，\<display-name\>，\<icon\>
+- **\<description\>项目描述\</discription\>**  对项目做出描述。
+- **\<display-name\>项目名称\</display-name\>** 定义项目的名称。
+- **\<icon\>** icon元素包含small-icon和large-icon两个子元素，用来指定web站台中小图标和大图标的路径。
+    - **\<small-icon\>/路径/smallicon.gif\</small-icon\>**：small-icon元素应指向web站台中某个小图标的路径，大小为16 X 16 pixel,但是图象文件必须为GIF或JPEG格式,扩展名必须为：.gif或 .jpg。
+    - **\<large-icon\>/路径/largeicon-jpg\</large-icon\>**：large-icon元素应指向web站台中某个大图表路径，大小为32 X 32 pixel，但是图象文件必须为GIF或JPEG的格式，扩展名必须为： gif 或jpg。
 
 ```xml
 <display-name>Develop Example</display-name>    
@@ -32,11 +32,11 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 </icon>  
 ```
 
-###2、<context-param>
-**<context-param>**元素含有一对参数名和参数值，用作应用的servlet上下文**初始化参数**。参数名在整个Web应用中必须是惟一的。
+###2、\<context-param\>
+**\<context-param\>**元素含有一对参数名和参数值，用作应用的servlet上下文**初始化参数**。参数名在整个Web应用中必须是惟一的。
 - **context-param** 元素用来设定web应用的环境参数(context)，它包含两个子元素： **param-name**和**param-value**。 
-    - **<param-name>参数名称</param-name>**：设定Context名称 。
-    - **<param-value>值</param-value>**：设定Context名称的值 
+    - **\<param-name\>参数名称\</param-name\>**：设定Context名称 。
+    - **\<param-value\>值\</param-value\>**：设定Context名称的值 
 
 ```xml
 <context-param>  
@@ -56,7 +56,7 @@ ${initParam.param_name}
 ```java
 String param_name = getServletContext().getInitParamter("param_name");
 ```
-###3、<filter>
+###3、\<filter\>
 **filter**元素用于**指定Web容器中的过滤器**。
 
 在请求和响应对象被servlet处理之前或之后，可以使用过滤器对这两个对象进行操作。
@@ -65,12 +65,12 @@ String param_name = getServletContext().getInitParamter("param_name");
 这个过滤器的filter元素和filter-mapping 元素必须具有相同的名称。
 
 filter元素用来声明filter的相关设定：
-- **<display-name></display-name>**
-- **<description></description>**
-- **<icon></icon>**
-- **<init-param></init-param>**：与context-param 元素具有相同的元素描述符。
-- **<filter-name>Filter的名称</filter-name>**：定义过滤器的名称，该名称在整个应用中都必须是惟一的。
-- **<filter-class>Filter的类名称</filter-class>**：指定过滤 器类的完全限定的名称。例如:com.foo.hello。
+- **\<display-name\>\</display-name\>**
+- **\<description\>\</description\>**
+- **\<icon\>\</icon\>**
+- **\<init-param\>\</init-param\>**：与context-param 元素具有相同的元素描述符。
+- **\<filter-name\>Filter的名称\</filter-name\>**：定义过滤器的名称，该名称在整个应用中都必须是惟一的。
+- **\<filter-class\>Filter的类名称\</filter-class\>**：指定过滤 器类的完全限定的名称。例如:com.foo.hello。
 
 ```xml
 <filter>  
@@ -83,7 +83,7 @@ filter元素用来声明filter的相关设定：
 </filter>  
 ```
 
-###4、<filter-mapping>
+###4、\<filter-mapping\>
 **filter-mapping**元素用来**声明Web应用中的过滤器映射**。
 
 **过滤器**可被映射到**一个servlet**或**一个URL模式**：
@@ -93,10 +93,10 @@ filter元素用来声明filter的相关设定：
 **过滤**是按照部署描述符的filter-mapping元素出现的**顺序执行**的。
 
 **filter-mapping** 元素的两个主要子元素**filter-name**和**url-pattern**，用来定义Filter所对应的URL。还有**servlet-name**和**dispatcher**子元素，不是很常用。
-- **<filter-name>Filter的名称</filter-name>**：定义Filter的名称.
-- **<url-pattern>URL</url-pattern>**：Filter所对应的RUL。例如：<url-pattern>/Filter/Hello</url-pattern>
-- **<servlet-name>Servlet的名称<servlet-name>**：定义servlet的名称。
-- **<dispatcher>REQUEST|INCLUDE|FORWARD|ERROR</disaptcher>**：设定Filter对应的请求方式，有RQUEST，INCLUDE，FORWAR，ERROR四种，默认为REQUEST。
+- **\<filter-name\>Filter的名称\</filter-name\>**：定义Filter的名称.
+- **\<url-pattern\>URL\</url-pattern\>**：Filter所对应的RUL。例如：\<url-pattern\>/Filter/Hello\</url-pattern\>
+- **\<servlet-name\>Servlet的名称\<servlet-name\>**：定义servlet的名称。
+- **\<dispatcher\>REQUEST|INCLUDE|FORWARD|ERROR\</disaptcher\>**：设定Filter对应的请求方式，有RQUEST，INCLUDE，FORWAR，ERROR四种，默认为REQUEST。
 例如：
 
 ```xml
@@ -117,7 +117,7 @@ filter元素用来声明filter的相关设定：
 </filter-mapping>  
 ```
 
-###5、<servlet>
+###5、\<servlet\>
 在web.xml中完成的一个最常见的任务是对servlet或JSP页面给出名称和定制的URL。用servlet元素分配名称，使用**servlet-mapping**元素**将定制的URL与分配的名称相关联**。
 ```xml
 <servlet>   
@@ -127,10 +127,10 @@ filter元素用来声明filter的相关设定：
 ```
 这表示位于WEB-INF/classes/com/moreservlets/TestServlet的servlet已经得到了注册名Test。
 
-###6、<servlet-mapping>
+###6、\<servlet-mapping\>
 **servlet-mapping**元素包含两个子元素**servlet-name**和**url-pattern**，用来定义servlet所对应URL。
-- **<servlet-name>Servlet的名称</servlet-name>**：定义Servlet的名称。
-- **<url-pattern>Servlet URL</url-pattern>**：定义Servlet所对应的RUL。例如：<url-pattern>/Servlet/Hello</url-pattern>
+- **\<servlet-name\>Servlet的名称\</servlet-name\>**：定义Servlet的名称。
+- **\<url-pattern\>Servlet URL\</url-pattern\>**：定义Servlet所对应的RUL。例如：\<url-pattern\>/Servlet/Hello\</url-pattern\>
 
 ```xml
 <servlet-mapping>  
@@ -155,11 +155,11 @@ filter元素用来声明filter的相关设定：
 ```  
 在地址栏中输入 http://localhost:8080/web-App/aaa/xxx 就可以访问了。
  
-###7、<listener>
+###7、\<listener\>
 **listener**元素用来**注册一个监听器类**，可以在Web应用中包含该类。使用listener元素，可以收到事件什么时候发生以及用什么作为响应的通知。
 
-**listener**元素用来定义Listener接口,它的主要子元素为**<listener-class>**
-- **<listen-class>Listener的类名称</listener-class>**：定义Listener的类名称。例如：com.foo.hello。
+**listener**元素用来定义Listener接口,它的主要子元素为**\<listener-class\>**
+- **\<listen-class\>Listener的类名称\</listener-class\>**：定义Listener的类名称。例如：com.foo.hello。
 
 ```xml
 <listener>  
@@ -167,9 +167,9 @@ filter元素用来声明filter的相关设定：
 </listener>  
 ```
 
-###8、<session-cofing>
+###8、\<session-cofing\>
 **session-config**包含一个子元素**session-timeout**，定义**web应用中的session参数**。
-- **<session-timeout>分钟</session-timeout>**：定义这个web应用所有session的有效期限。单位为分钟。
+- **\<session-timeout\>分钟\</session-timeout\>**：定义这个web应用所有session的有效期限。单位为分钟。
 
 ```xml
 <session-config>  
@@ -177,10 +177,10 @@ filter元素用来声明filter的相关设定：
 </session-config>  
 ```
 
-###9、<mime-mapping>
+###9、\<mime-mapping\>
 **mime-mapping**包含两个子元素**extension**和**mime-type**。定义**某一个扩展名和某一MIME Type做对映**。
-- **<extension>扩展名名称</extension>**：扩展名称。
-- **<mime-type>MIME格式</mime-type>**：MIME格式。
+- **\<extension\>扩展名名称\</extension\>**：扩展名称。
+- **\<mime-type\>MIME格式\</mime-type\>**：MIME格式。
 
 ```xml
 <mime-mapping>  
@@ -197,9 +197,9 @@ filter元素用来声明filter的相关设定：
 </mime-mapping>  
 ```
 
-###10、<welcome-file-list>
+###10、\<welcome-file-list\>
 **welcome-file-list**包含一个子元素**welcome-file**，用来**定义首页列单**。
-- **<welcome-file>用来指定首页文件名称</welcome-flie>**：welcome-file用来指定首页文件名称。可以用<welcome-file>指定几个首页，服务器会依照设定的顺序来找首页。
+- **\<welcome-file\>用来指定首页文件名称\</welcome-flie\>**：welcome-file用来指定首页文件名称。可以用\<welcome-file\>指定几个首页，服务器会依照设定的顺序来找首页。
 
 ```xml
 <welcome-file-list>  
@@ -208,11 +208,11 @@ filter元素用来声明filter的相关设定：
 </welcome-file-list>  
 ```
 
-###11、<error-page>
+###11、\<error-page\>
 **error-page**元素包含三个子元素**error-code**,**exception-type**和**location**。**将错误代码(Error Code)或异常(Exception)的种类对应到web应用资源路径**。
-- **<error-code>错误代码</error-code>**：HTTP Error code。例如：404。
-- **<exception-type>Exception</exception-type>**：一个完整名称的Java异常类型。
-- **<location>/路径</location>**：在web应用内的相关资源路径。
+- **\<error-code\>错误代码\</error-code\>**：HTTP Error code。例如：404。
+- **\<exception-type\>Exception\</exception-type\>**：一个完整名称的Java异常类型。
+- **\<location\>/路径\</location\>**：在web应用内的相关资源路径。
 
 ```xml
 <error-page>  
@@ -225,21 +225,21 @@ filter元素用来声明filter的相关设定：
 </error-page>  
 ```
 
-###12、<jsp-config>
-**jsp-config**元素主要用来设定JSP的相关配，<jsp:config>包括**<taglib>**和**<jsp-property-group>**两个子元素，其中<taglib>元素在JSP 1.2时就已经存在了；<jsp-property-group>是JSP 2.0新增的元素。
-- **<taglib></taglib>**：**taglib**元素包含两个子元素**taglib-uri**和**taglib-location**，用来**设定JSP网页用到的Tag Library路径**。
-    - **<taglib-uri>URI</taglib-uri>**：taglib-uri定义TLD文件的URI，JSP网页的taglib指令可以经由这个URI存取到TLD文件。
-    - **<taglib-location>/WEB-INF/lib/xxx.tld</taglib-laction>**：TLD文件对应Web应用的存放位置。
+###12、\<jsp-config\>
+**jsp-config**元素主要用来设定JSP的相关配，\<jsp:config\>包括**\<taglib\>**和**\<jsp-property-group\>**两个子元素，其中\<taglib\>元素在JSP 1.2时就已经存在了；\<jsp-property-group\>是JSP 2.0新增的元素。
+- **\<taglib\>\</taglib\>**：**taglib**元素包含两个子元素**taglib-uri**和**taglib-location**，用来**设定JSP网页用到的Tag Library路径**。
+    - **\<taglib-uri\>URI\</taglib-uri\>**：taglib-uri定义TLD文件的URI，JSP网页的taglib指令可以经由这个URI存取到TLD文件。
+    - **\<taglib-location\>/WEB-INF/lib/xxx.tld\</taglib-laction\>**：TLD文件对应Web应用的存放位置。
 
-- **<jsp-property-group></jsp-property-group>**：jsp-property-group元素包含8个元素。
-    - **<description>Description</descrition>**：此设定的说明。
-    - **<display-name>Name</display-name>**：此设定的名称。
-    - **<url-pattern>URL</url-pattern>**：设定值所影响的范围，如：/CH2 或者/*.jsp。
-    - **<el-ignored>true|false</el-ignored>**：若为true，表示不支持EL语法。
-    - **<scripting-invalid>true|false</scripting-invalid>**：若为true表示不支持<%scription%>语法。
-    - **<page-encoding>encoding</page-encoding>**：设定JSP网页的编码。
-    - **<include-prelude>.jspf</include-prelude>**：设置JSP网页的抬头，扩展名为.jspf。
-    - **<include-coda>.jspf</include-coda>**：设置JSP网页的结尾，扩展名为.jspf。
+- **\<jsp-property-group\>\</jsp-property-group\>**：jsp-property-group元素包含8个元素。
+    - **\<description\>Description\</descrition\>**：此设定的说明。
+    - **\<display-name\>Name\</display-name\>**：此设定的名称。
+    - **\<url-pattern\>URL\</url-pattern\>**：设定值所影响的范围，如：/CH2 或者/*.jsp。
+    - **\<el-ignored\>true|false\</el-ignored\>**：若为true，表示不支持EL语法。
+    - **\<scripting-invalid\>true|false\</scripting-invalid\>**：若为true表示不支持<%scription%>语法。
+    - **\<page-encoding\>encoding\</page-encoding\>**：设定JSP网页的编码。
+    - **\<include-prelude\>.jspf\</include-prelude\>**：设置JSP网页的抬头，扩展名为.jspf。
+    - **\<include-coda\>.jspf\</include-coda\>**：设置JSP网页的结尾，扩展名为.jspf。
 
 ```xml
 <jsp-config>  
@@ -261,13 +261,13 @@ filter元素用来声明filter的相关设定：
 </jsp-config>  
 ```
 
-###13、<resource-ref>
+###13、\<resource-ref\>
 **resource-ref**元素包括五个子元素**description**,**res-ref-name**,**res-type**,**res-auth**,**res-sharing-scope**，**利用JNDI取得应用可利用资源**。
-- **<description>说明</description>**：资源说明。
-- **<rec-ref-name>资源名称</rec-ref-name>**：资源名称。
-- **<res-type>资源种类</res-type>**：资源种类。
-- **<res-auth>Application|Container</res-auth>**：资源由Application或Container来许可。
-- **<res-sharing-scope>Shareable|Unshareable</res-sharing-scope>**：资源是否可以共享。默认值为 Shareable。
+- **\<description\>说明\</description\>**：资源说明。
+- **\<rec-ref-name\>资源名称\</rec-ref-name\>**：资源名称。
+- **\<res-type\>资源种类\</res-type\>**：资源种类。
+- **\<res-auth\>Application|Container\</res-auth\>**：资源由Application或Container来许可。
+- **\<res-sharing-scope\>Shareable|Unshareable\</res-sharing-scope\>**：资源是否可以共享。默认值为 Shareable。
 
 ```xml
 <resource-ref>  
