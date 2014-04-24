@@ -16,12 +16,12 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 </web-app>  
 ```
 ###web.xml中常用的标签及其功能
-###1、<description>，<display-name>，<icon>
+###1、\<description\>，<display-name\>，<icon\>
 - **<description>项目描述</discription>**  对项目做出描述。
 - **<display-name>项目名称</display-name>** 定义项目的名称。
 - **<icon>** icon元素包含small-icon和large-icon两个子元素，用来指定web站台中小图标和大图标的路径。
     - **<small-icon>/路径/smallicon.gif</small-icon>**：small-icon元素应指向web站台中某个小图标的路径，大小为16 X 16 pixel,但是图象文件必须为GIF或JPEG格式,扩展名必须为：.gif或 .jpg。
-    - **<large-icon>/路径/largeicon-jpg</large-icon>**： large-icon元素应指向web站台中某个大图表路径，大小为32 X 32 pixel，但是图象文件必须为GIF或JPEG的格式，扩展名必须为： gif 或jpg。
+    - **<large-icon>/路径/largeicon-jpg</large-icon>**：large-icon元素应指向web站台中某个大图表路径，大小为32 X 32 pixel，但是图象文件必须为GIF或JPEG的格式，扩展名必须为： gif 或jpg。
 
 ```xml
 <display-name>Develop Example</display-name>    
@@ -35,8 +35,8 @@ http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 ###2、<context-param>
 **<context-param>**元素含有一对参数名和参数值，用作应用的servlet上下文**初始化参数**。参数名在整个Web应用中必须是惟一的。
 - **context-param** 元素用来设定web应用的环境参数(context)，它包含两个子元素： **param-name**和**param-value**。 
-    - **<param-name>参数名称</param-name>** 设定Context名称 。
-    - **<param-value>值</param-value>** 设定Context名称的值 
+    - **<param-name>参数名称</param-name>**：设定Context名称 。
+    - **<param-value>值</param-value>**：设定Context名称的值 
 
 ```xml
 <context-param>  
@@ -67,7 +67,7 @@ String param_name = getServletContext().getInitParamter("param_name");
 filter元素用来声明filter的相关设定：
 - **<display-name></display-name>**
 - **<description></description>**
-- **<icon></<icon>**
+- **<icon></icon>**
 - **<init-param></init-param>**：与context-param 元素具有相同的元素描述符。
 - **<filter-name>Filter的名称</filter-name>**：定义过滤器的名称，该名称在整个应用中都必须是惟一的。
 - **<filter-class>Filter的类名称</filter-class>**：指定过滤 器类的完全限定的名称。例如:com.foo.hello。
