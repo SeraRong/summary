@@ -50,6 +50,7 @@ git log
 git log --pretty=oneline
 ```
 **上一个版本**就是`HEAD^`，**上上一个版本**就是`HEAD^^`，也可采用commit id。
+
 回退至上一版本：
 ```git
 git reset --hard HEAD^
