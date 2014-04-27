@@ -3,7 +3,7 @@ Spring 基础
 
 ###1、Spring架构图
 
-![Alt text](../Z_Image/spring.png)
+![Alt text](../99_Image/spring.png)
 
 ####1）核心容器
 包括**Core**、**Beans**、**Context**、**EL**模块。
@@ -49,7 +49,7 @@ Spring支持**Junit**和**TestNG**测试框架，而且还额外提供了一些�
  
 ####1）典型Web应用程序应用场景：
 
-![Alt text](../Z_Image/web_scene.jpg)
+![Alt text](../99_Image/web_scene.jpg)
 
 在Web应用程序应用场景中，典型的三层架构：数据模型层实现域对象；数据访问层实现数据访问；逻辑层实现业务逻辑；web层提供页面展示；所有这些层组件都由Spring进行管理，享受到Spring事务管理、AOP等好处，而且请求唯一入口就是DispachterServlet，它通过把请求映射为相应web层组件来实现相应请求功能。
  
