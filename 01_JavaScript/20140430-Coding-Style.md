@@ -292,7 +292,7 @@ if (typeof Object.prototype.clone === "undefined") {
 ```javascript
 // 1.
 // for-in 循环
-for (var i in m```javacriptan) {
+for (var i in man) {
    if (man.hasOwnProperty(i)) { // 过滤
       console.log(i, ":", man[i]);
    }
@@ -583,9 +583,8 @@ if (true) {
 if (true) {
    alert("It's TRUE!");
 }
-
-//或
-
+```
+```javascript
 if (true)
 {
    alert("It's TRUE!");
@@ -596,7 +595,7 @@ if (true)
 // 警告： 意外的返回值
 function func() {
    return
-  // 下面代码不执行
+   // 下面代码不执行
    {
       name : "Batman"
    }
@@ -607,7 +606,7 @@ function func() {
 // 警告： 意外的返回值
 function func() {
    return undefined;
-  // 下面代码不执行
+   // 下面代码不执行
    {
       name : "Batman"
    }
@@ -671,7 +670,7 @@ function myFunc() {}
 var myFunc = function () {};
 ```
 
-使用**空格分开所有的操作符**和**操作对象**是另一个不错的使用，这意味着在**+, -, *, =, <, >, <=, >=** ===, !==, &&, ||, +=等前后**都**需要空格**。
+使用**空格分开所有的操作符**和**操作对象**是另一个不错的使用，这意味着在**+, -, *, =, <, >, <=, >=, ===, !==, &&, ||, +=等前后**都**需要空格**。
 
 ```javacript
 // 宽松一致的间距
