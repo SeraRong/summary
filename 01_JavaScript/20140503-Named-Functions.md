@@ -9,13 +9,13 @@ JavaScript 命名函数表达式
 - **函数声明**:
 
 ```javascript
-function 函数名称 (参数：可选){ 函数体 }
+function 函数名称 (参数：可选) { 函数体 }
 ```
 
 - **函数表达式**：
 
 ```javascript
-function 函数名称（可选）(参数：可选){ 函数体 }
+function 函数名称（可选）(参数：可选) { 函数体 }
 ```
 
 如果不声明函数名称，它肯定是表达式，可如果声明了函数名称的话，如何判断是函数声明还是函数表达式呢？
@@ -25,19 +25,19 @@ ECMAScript是通过上下文来区分的：
 - 如果function foo(){}**被包含在一个函数体内**，或者**位于程序的最顶部**的话，那它就是一个**函数声明**。
 
 ```javascript
-function foo(){} // 声明，因为它是程序的一部分
-var bar = function foo(){}; // 表达式，因为它是赋值表达式的一部分
+function foo() {} // 声明，因为它是程序的一部分
+var bar = function foo() {}; // 表达式，因为它是赋值表达式的一部分
 
-new function bar(){}; // 表达式，因为它是new表达式
+new function bar() {}; // 表达式，因为它是new表达式
 
-(function(){
-    function bar(){} // 声明，因为它是函数体的一部分
+(function() {
+    function bar() {} // 声明，因为它是函数体的一部分
 })();
 ```
 还有一种函数表达式不太常见，就是被括号括住的(function foo(){})，他是表达式的原因是因为括号()是一个分组操作符，它的内部只能包含表达式，我们来看几个例子：
 ```javascript
-function foo(){} // 函数声明
-(function foo(){}); // 函数表达式：包含在分组操作符内
+function foo() {} // 函数声明
+(function foo() {}); // 函数表达式：包含在分组操作符内
 
 try {
     (var x = 5); // 分组操作符，只能包含表达式而不能包含语句：这里的var就是语句
@@ -134,10 +134,10 @@ foo(); // 1
 typeof foo; // "undefined"
 if (true) {
     // 进入这里以后，foo就被声明在整个作用域内了
-    function foo(){ return 1; }
+    function foo() { return 1; }
 } else {
     // 从来不会走到这里，所以这里的foo也不会被声明
-    function foo(){ return 2; }
+    function foo() { return 2; }
 }
 typeof foo; // "function"
 ```  
@@ -153,7 +153,7 @@ if (true) {
 4）函数语句和函数声明（或命名函数表达式）的字符串表示类似，也包括标识符：
 ```javascript
 if (true) {
-    function foo(){ return 1; }
+    function foo() { return 1; }
 }
 String(foo); // function foo() { return 1; }
 ```
@@ -163,7 +163,7 @@ String(foo); // function foo() { return 1; }
 function foo() { return 1; }
 if (true) {
     // 用函数语句重写
-    function foo(){ return 2; }
+    function foo() { return 2; }
 }
 foo(); // FF3以下返回1，FF3.5以上返回2
 
@@ -208,7 +208,7 @@ var contains = (function() {
 **【注】**
 **命名函数表达式的名字只在新定义的函数作用域内有效**，因为规范规定了标示符不能在外围的作用域内有效。
 ```javascript
-var f = function foo(){
+var f = function foo() {
     return typeof foo; // foo是在内部作用域内有效
 };
 // foo在外部用于是不可见的
@@ -266,7 +266,7 @@ function foo() {
 }
 var bar = (function() {
     if (window.addEventListener) {
-        return function(){
+        return function() {
             return baz();
         };
     } else if (window.attachEvent) {
