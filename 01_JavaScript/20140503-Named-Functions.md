@@ -334,3 +334,375 @@ bar
 foo
 expr_test.html()
 ```
+
+###5、JScript的Bug
+IE的ECMAScript实现JScript严重混淆了命名函数表达式，搞得现很多人都出来反对命名函数表达式，而且即便是最新的一版（IE8中使用的5.8版）仍然存在下列问题。
+
+**IE实现中犯的错误**：
+- *例1：函数表达式的标示符泄露到外部作用域。*
+
+```javascript
+var f = function g() {};
+typeof g; // "function"
+```
+命名函数表达式的标示符在外部作用域是无效的，但JScript明显是违反了这一规范，上面例子中的标示符g被解析成函数对象，这就乱了套了，很多难以发现的bug都是因为这个原因导致的。
+
+**【注】** IE9貌似已经修复了这个问题。
+
+- *例2：将命名函数表达式同时当作函数声明和函数表达式。*
+
+```javascript
+typeof g; // "function"
+var f = function g() {};
+```
+特性环境下，函数声明会优先于任何表达式被解析，上面的例子展示的是JScript实际上是把命名函数表达式当成函数声明了，因为它在实际声明之前就解析了g。
+
+- *例3：命名函数表达式会创建两个截然不同的函数对象。*
+
+```javascript
+var f = function g() {};
+f === g; // false
+
+f.expando = 'foo';
+g.expando; // undefined
+```
+创建2个不同的对象，也就是说如果你想修改f的属性中保存某个信息，然后想当然地通过引用相同对象的g的同名属性来使用，那问题就大了，因为根本就不可能。
+
+- *例4：仅仅顺序解析函数声明而忽略条件语句块。*
+
+```javascript
+var f = function g() {
+    return 1;
+};
+if (false) {
+    f = function g() {
+        return 2;
+    };
+}
+g(); // 2
+```
+这个bug查找就难多了，但导致bug的原因却非常简单。
+- 首先，g被当作函数声明解析，由于JScript中的函数声明不受条件代码块约束，所以在这个很恶的if分支中，g被当作另一个函数`function g() { return 2 }`，也就是又被声明了一次。
+- 然后，所有“常规的”表达式被求值，而此时f被赋予了另一个新创建的对象的引用。由于在对表达式求值的时候，永远不会进入“这个可恶if分支，因此f就会继续引用第一个函数`function g() { return 1 }`。
+- 分析到这里，问题就很清楚了：在f中调用了g，那么将会调用一个毫不相干的g函数对象。
+
+**不同的对象**和**arguments.callee**的**区别**：
+```javascript
+var f = function g() {
+    return [
+        arguments.callee == f,
+        arguments.callee == g
+    ];
+};
+f(); // [true, false]
+g(); // [false, true]
+```
+**【注】** *arguments.callee的引用一直是被调用的函数*。
+
+在不包含声明的赋值语句中使用命名函数表达式：
+```javascript
+  (function(){
+    f = function f(){};
+  })();
+```
+按照代码的分析，我们原本是想创建一个全局属性f（注意不要和一般的匿名函数混淆了，里面用的是带名字的生命），JScript在这里捣乱了一把，首先他把表达式当成函数声明解析了，所以左边的f被声明为局部变量了（和一般的匿名函数里的声明一样），然后在函数执行的时候，f已经是定义过的了，右边的function f(){}则直接就赋值给局部变量f了，所以f根本就不是全局属性。
+
+**预防**这些问题的**方法**： 
+- 首先，*防范标识符泄漏带外部作用域*。
+- 其次，*应该永远不引用被用作函数名称的标识符*。始终要通过f或者arguments.callee来引用函数。
+- 最后，*一定要把命名函数表达式声明期间错误创建的函数清理干净*。
+
+###6、JScript的内存管理
+**不符合规范的代码**会**导致内存方面的问题**：
+```javascript
+var f = (function(){
+    if (true) {
+        return function g(){};
+    }
+    return function g(){};
+})();
+```
+匿名函数调用返回的函数（带有标识符g的函数），然后赋值给了外部的f。命名函数表达式会导致产生多余的函数对象，而该对象与返回的函数对象不是一回事。所以这个多余的g函数就死在了返回函数的闭包中了，因此内存问题就出现了。这是因为if语句内部的函数与g是在同一个作用域中被声明的。这种情况下，除非我们显式断开对g函数的引用，否则它一直占着内存不放。
+```javascript
+var f = (function(){
+    var f, g;
+    if (true) {
+        f = function g(){};
+    } else {
+        f = function g(){};
+    }
+    // 设置g为null以后它就不会再占内存了
+    g = null;
+    return f;
+})();
+```
+通过设置g为null，垃圾回收器就把g引用的那个隐式函数给回收掉了，为了验证我们的代码，我们来做一些测试，以确保我们的内存被回收了。
+
+####测试
+命名函数表达式创建10000个函数，然后把它们保存在一个数组中。等一会儿以后再看这些函数到底占用了多少内存。然后，再断开这些引用并重复这一过程。下面是测试代码：
+```javascript
+function createFn(){
+    return (function(){
+        var f;
+        if (true) {
+            f = function F(){
+                return 'standard';
+            };
+        } else if (false) {
+            f = function F(){
+                return 'alternative';
+            };
+        } else {
+            f = function F(){
+              return 'fallback';
+            };
+        }
+        // var F = null;
+        return f;
+    })();
+}
+
+var arr = [ ];
+for (var i=0; i<10000; i++) {
+    arr[i] = createFn();
+}
+```
+通过运行在Windows XP SP2中的任务管理器可以看到如下结果：
+
+- IE6：
+
+```
+without `null`:   7.6K -> 20.3K
+with `null`:      7.6K -> 18K
+```
+- IE7：
+
+```
+without `null`:   14K -> 29.7K
+with `null`:      14K -> 27K
+```
+显示断开引用可以释放内存，但是释放的内存不是很多，10000个函数对象才释放大约3M的内存，这对一些小型脚本不算什么，但对于大型程序，或者长时间运行在低内存的设备里的时候，这是非常有必要的。
+
+###7、SpiderMonkey的怪癖
+命名函数表达式的标识符只在函数的局部作用域中有效。但包含这个标识符的局部作用域又是什么样子的吗？其实非常简单。在命名函数表达式被求值时，会创建一个特殊的对象，该对象的唯一目的就是保存一个属性，而这个属性的名字对应着函数标识符，属性的值对应着那个函数。这个对象会被注入到当前作用域链的前端。然后，被“扩展”的作用域链又被用于初始化函数。
+
+ECMA-262定义这个（保存函数标识符的）“特殊”对象的方式。标准说“像调用new Object()表达式那样”创建这个对象。如果从字面上来理解这句话，那么这个对象就应该是全局Object的一个实例。然而，只有一个实现是按照标准字面上的要求这么做的，这个实现就是SpiderMonkey。因此，在SpiderMonkey中，扩展Object.prototype有可能会干扰函数的局部作用域：
+```javascript
+Object.prototype.x = 'outer';
+
+(function(){
+    var x = 'inner';
+    
+    /*
+      函数foo的作用域链中有一个特殊的对象——用于保存函数的标识符。这个特殊的对象实际上就是{ foo: <function object> }。
+      当通过作用域链解析x时，首先解析的是foo的局部环境。如果没有找到x，则继续搜索作用域链中的下一个对象。下一个对象
+      就是保存函数标识符的那个对象——{ foo: <function object> }，由于该对象继承自Object.prototype，所以在此可以找到x。
+      而这个x的值也就是Object.prototype.x的值（outer）。结果，外部函数的作用域（包含x = 'inner'的作用域）就不会被解析了。
+    */
+    
+    (function foo(){
+        alert(x); // 提示框中显示：outer
+    })();
+})();
+```
+不过，更高版本的SpiderMonkey改变了上述行为，原因可能是认为那是一个安全漏洞。也就是说，“特殊”对象不再继承Object.prototype了。不过，如果你使用Firefox 3或者更低版本，还可以“重温”这种行为。
+
+**【注】**
+- 1、更高版本的SpiderMonkey改变了上述行为。“特殊”对象不再继承Object.prototype了。
+- 2、Firefox 3或者更低版本存在上述行为。
+
+另一个把内部对象实现为全局Object对象的是**黑莓（Blackberry）浏览器**。目前，它的活动对象（Activation Object）仍然继承Object.prototype。可是，ECMA-262并没有说活动对象也要“像调用new Object()表达式那样”来创建（或者说像创建保存NFE标识符的对象一样创建）。 人家规范只说了活动对象是规范中的一种机制。 
+```javascript
+Object.prototype.x = 'outer';
+
+(function(){
+    var x = 'inner';
+    
+    (function(){
+      
+        /*
+        在沿着作用域链解析x的过程中，首先会搜索局部函数的活动对象。当然，在该对象中找不到x。
+        可是，由于活动对象继承自Object.prototype，因此搜索x的下一个目标就是Object.prototype；而
+        Object.prototype中又确实有x的定义。结果，x的值就被解析为——outer。跟前面的例子差不多，
+        包含x = 'inner'的外部函数的作用域（活动对象）就不会被解析了。
+        */
+      
+        alert(x); // 显示：outer
+    })();
+})();
+```
+不过神奇的还是，函数中的变量甚至会与已有的Object.prototype的成员发生冲突，来看看下面的代码：
+```javascript
+(function(){
+    
+    var constructor = function(){ return 1; };
+    
+    (function(){
+      
+        constructor(); // 求值结果是{}（即相当于调用了Object.prototype.constructor()）而不是1
+      
+        constructor === Object.prototype.constructor; // true
+        toString === Object.prototype.toString; // true
+      
+        // ……
+      
+    })();
+})();
+```
+要避免这个问题，要**避免使用Object.prototype里的属性名称**，如toString, valueOf, hasOwnProperty等等。
+
+**JScript解决方案**
+```javascript
+var fn = (function(){
+
+    // 声明要引用函数的变量
+    var f;
+
+    // 有条件地创建命名函数
+    // 并将其引用赋值给f
+    if (true) {
+        f = function F(){ }
+    }
+    else if (false) {
+        f = function F(){ }
+    }
+    else {
+        f = function F(){ }
+    }
+
+    // 声明一个与函数名（标识符）对应的变量，并赋值为null
+    // 这实际上是给相应标识符引用的函数对象作了一个标记，
+    // 以便垃圾回收器知道可以回收它了
+    var F = null;
+
+    // 返回根据条件定义的函数
+    return f;
+})();
+```
+最后我们给出一个应用上述技术的应用实例，这是一个跨浏览器的addEvent函数代码：
+```javascript
+  // 1) 使用独立的作用域包含声明
+var addEvent = (function(){
+
+    var docEl = document.documentElement;
+
+    // 2) 声明要引用函数的变量
+    var fn;
+
+    if (docEl.addEventListener) {
+
+      // 3) 有意给函数一个描述性的标识符
+        fn = function addEvent(element, eventName, callback) {
+            element.addEventListener(eventName, callback, false);
+        }
+    } else if (docEl.attachEvent) {
+        fn = function addEvent(element, eventName, callback) {
+            element.attachEvent('on' + eventName, callback);
+        }
+    } else {
+        fn = function addEvent(element, eventName, callback) {
+            element['on' + eventName] = callback;
+        }
+    }
+
+    // 4) 清除由JScript创建的addEvent函数
+    //    一定要保证在赋值前使用var关键字
+    //    除非函数顶部已经声明了addEvent
+    var addEvent = null;
+
+    // 5) 最后返回由fn引用的函数
+    return fn;
+})();
+```
+
+###8、替代方案
+
+其实，如果我们不想要这个描述性名字的话，我们就可以用最简单的形式来做，也就是在函数内部声明一个函数（而不是函数表达式），然后返回该函数：
+```javascript
+var hasClassName = (function(){
+
+    // 定义私有变量
+    var cache = { };
+
+    // 使用函数声明
+    function hasClassName(element, className) {
+        var _className = '(?:^|\\s+)' + className + '(?:\\s+|$)';
+        var re = cache[_className] || (cache[_className] = new RegExp(_className));
+        return re.test(element.className);
+    }
+
+    // 返回函数
+    return hasClassName;
+})();
+```
+显然，当存在多个分支函数定义时，这个方案就不行了。不过有种模式貌似可以实现：那就是提前使用函数声明来定义所有函数，并分别为这些函数指定不同的标识符：
+```javascript
+var addEvent = (function(){
+
+    var docEl = document.documentElement;
+
+    function addEventListener(){
+      /* ... */
+    }
+    function attachEvent(){
+      /* ... */
+    }
+    function addEventAsProperty(){
+      /* ... */
+    }
+
+    if (typeof docEl.addEventListener != 'undefined') {
+        return addEventListener;
+    }
+    elseif (typeof docEl.attachEvent != 'undefined') {
+        return attachEvent;
+    }
+    return addEventAsProperty;
+})();
+```
+上述方案的**缺点**：
+- 第一，**由于使用不同的标识符，导致丧失了命名的一致性**。且不说这样好还是坏，最起码它不够清晰。有人喜欢使用相同的名字，但也有人根本不在乎字眼上的差别。可毕竟，不同的名字会让人联想到所用的不同实现。例如，在调试器中看到attachEvent，我们就知道addEvent是基于attachEvent的实现。当 然，基于实现来命名的方式也不一定都行得通。假如我们要提供一个API，并按照这种方式把函数命名为inner。那么API用户的很容易就会被相应实现的 细节搞得晕头转向。
+
+要解决这个问题，当然就得想一套更合理的命名方案了。但关键是不要再额外制造麻烦。我现在能想起来的方案大概有如下几个：
+```
+  'addEvent', 'altAddEvent', 'fallbackAddEvent'
+  // 或者
+  'addEvent', 'addEvent2', 'addEvent3'
+  // 或者
+  'addEvent_addEventListener', 'addEvent_attachEvent', 'addEvent_asProperty'
+```
+
+- 另外，这种模式还存在一个小问题，即**增加内存占用**。提前创建N个不同名字的函数，等于有N-1的函数是用不到的。具体来讲，如果document.documentElement 中包含attachEvent，那么addEventListener 和addEventAsProperty则根本就用不着了。可是，他们都占着内存哪；而且，这些内存将永远都得不到释放，原因跟JScript臭哄哄的命名表达式相同——这两个函数都被“截留”在返回的那个函数的闭包中了。
+
+不过，增加内存占用这个问题确实没什么大不了的。如果某个库——例如Prototype.js——采用了这种模式，无非也就是多创建一两百个函数而已。只要不是（在运行时）重复地创建这些函数，而是只（在加载时）创建一次，那么就没有什么好担心的。
+
+###9、WebKit的displayName
+
+WebKit团队在这个问题采取了有点儿另类的策略。介于匿名和命名函数如此之差的表现力，WebKit引入了一个“特殊的”displayName属性（本质上是一个字符串），如果开发人员为函数的这个属性赋值，则该属性的值将在调试器或性能分析器中被显示在函数“名称”的位置上。Francisco Tolmasky详细地解释了这个策略的原理和实现。
+
+###10、未来考虑
+
+将来的ECMAScript-262第5版会引入所谓的**严格模式**（strict mode）。开启严格模式的实现会禁用语言中的那些不稳定、不可靠和不安全的特性。据说出于安全方面的考虑，arguments.callee属性将在严格模式下被“封杀”。因此，在处于严格模式时，访问arguments.callee会导致TypeError（参见ECMA-262第5版的10.6节）。
+
+如果在基于第5版标准的实现中无法使用arguments.callee来执行递归操作，那么使用命名函数表达式的可能性就会大大增加。从这个意义上来说，理解命名函数表达式的语义及其bug也就显得更加重要了。
+
+```javascript
+// 此前，你可能会使用arguments.callee
+(function(x) {
+    if (x <= 1) return 1;
+    return x * arguments.callee(x - 1);
+})(10);
+
+// 但在严格模式下，有可能就要使用命名函数表达式
+(function factorial(x) {
+    if (x <= 1) return 1;
+    return x * factorial(x - 1);
+})(10);
+
+// 要么就退一步，使用没有那么灵活的函数声明
+function factorial(x) {
+    if (x <= 1) return 1;
+    return x * factorial(x - 1);
+}
+factorial(10);
+```
