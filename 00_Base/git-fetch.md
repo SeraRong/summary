@@ -83,4 +83,4 @@ su@SUCHANGLI /e/eoe_client/android-app (master)
 如果该分支没有合并到主分支会报错，可以用以下命令强制删除git branch -D <分支名>。
 
 ###3、总结
-方式二更好理解，更安全，对于pull也可以更新代码到本地，相当于fetch+merge，多人写作的话不够安全。
+方式二更好理解，更安全，对于pull也可以更新代码到本地，相当于fetch+merge，多人协作的话不够安全。
