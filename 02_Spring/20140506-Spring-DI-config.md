@@ -69,3 +69,4 @@ xmlns:p="http://www.springframework.org/schema/p" ：首先指定p命名空间�
 <bean id="……" class="……" p:id="value"/> ：常量setter注入方式，其等价于<property name="id" value="value"/>。
 <bean id="……" class="……" p:id-ref="bean1"/> ：引用setter注入方式，其等价于<property name="id" ref="bean1"/>。 
 ```
+
