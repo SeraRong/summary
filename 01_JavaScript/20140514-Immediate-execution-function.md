@@ -60,4 +60,6 @@ function foo(){ /* code */ }( 1 );
  
 // 因为它完全等价于下面这个代码，一个function声明后面，又声明了一个毫无关系的表达式： 
 function foo(){ /* code */ }
+
+( 1 );
 ```
