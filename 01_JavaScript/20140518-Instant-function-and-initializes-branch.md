@@ -1,8 +1,7 @@
 Javascript 中的即时函数和初始化分支
 ==================
-@[Web前端|JavaScript]
 
-众所周知，在Javascript中，定义函数的方式有三种。 
+在Javascript中，定义函数的方式有三种。 
 
 ###1、 定义函数的方式 
 ```javascript
