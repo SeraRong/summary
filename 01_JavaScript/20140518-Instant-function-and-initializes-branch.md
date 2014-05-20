@@ -1,8 +1,7 @@
 Javascript 中的即时函数和初始化分支
 ==================
-@[Web前端|JavaScript]
 
-众所周知，在Javascript中，定义函数的方式有三种。 
+在Javascript中，定义函数的方式有三种。 
 
 ###1、 定义函数的方式 
 ```javascript
@@ -147,7 +146,7 @@ var obj =  {
 
 当知道某个条件在整个程序生命周期都不会发生改变的时候，只需要对该条件判断一次就可以了。
 
-- 没有初始化分支的效果
+- **没有初始化分支的效果**
 
 ```javascript
 var utils = {
@@ -187,7 +186,7 @@ var utils = {
 **【问题】** 每次在调用utils.addListener或utils.removeListener时，都会**重复的执行相同的检查**，效率是比较低下的。 
 
 
-- 采用初始化分支的效果
+- **采用初始化分支的效果**
 
 ```javascript
 // 接口
