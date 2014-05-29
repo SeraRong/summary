@@ -93,15 +93,15 @@ var div = document.getElementById("mydiv");
 参数：要取得的元素标签名。返回包含零或者多个元素的NodeList。在HTML文档中，返回一个HTMLCollection对象，作为一个动态集合，类似NodeList。
 ```javascript
 // 获取标签元素集合  
-var  images = document.getElementByTagName("img");  
+var images = document.getElementByTagName("img");  
 // 获取所有元素  
 var all = document.getElementByTagName("*");  
 // 访问HTMLCollection对象中的元素  
-alert(iamges.length);  
-alert(iamges.item(1).src);  
-alert(iamges[0].src);  
+alert(images.length);  
+alert(images.item(1).src);  
+alert(images[0].src);  
 // 通过名称访问集合中指定的元素  
-alert(iamges.namedItem("myimage").src);  
+alert(images.namedItem("myimage").src);  
 // 或者通过下面方式访问指定名称的元素  
 alert(images["myimage"].src);  
 ```
