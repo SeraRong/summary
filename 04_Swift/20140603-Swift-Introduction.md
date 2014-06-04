@@ -404,8 +404,7 @@ counter.incrementBy(2, numberOfTimes: 7)
 #####6）?的另一种用途
 使用**可空值**时，**?**可以出现在**方法**、**属性**或**下标前面**。*如果?前的值为nil，那么?后面的表达式会被忽略，而原表达式直接返回nil*，例如：
 ```swift
-let optionalSquare: Square? = Square(sideLength: 2.5, name: "optional  
-square") 
+let optionalSquare: Square? = Square(sideLength: 2.5, name: "optional square") 
 let sideLength = optionalSquare?.sideLength 
 ```
 当optionalSquare为nil时，sideLength属性调用会被忽略。
