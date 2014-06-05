@@ -28,9 +28,9 @@ function getBeerById(id, callback) {
 ```javascript
 addEvent(element, 'click', getBeerByIdBridge);
 function getBeerByIdBridge (e) {
-　　getBeerById(this.id, function(beer) {
-　　    console.log('Requested Beer: '+beer);
-　　});
+    getBeerById(this.id, function(beer) {
+        console.log('Requested Beer: '+beer);
+    });
 }
 ```
 这里的getBeerByIdBridge就是我们定义的桥，用于将抽象的click事件和getBeerById连接起来，同时将事件源的ID，以及自定义的call函数（console.log输出）作为参数传入到getBeerById函数里。
