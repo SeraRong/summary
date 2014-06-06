@@ -1,6 +1,5 @@
-JavaScript匿名函数
+JavaScript 匿名函数
 =========
-@[JavaScript]
 
 ###0、匿名函数（拉姆达函数）
 ```javascript
