@@ -394,3 +394,6 @@
 | (?(name)yes！no)  | 如果命名为name的组捕获到了内容，使用yes作为表达式；否则使用no |
 | (?(name)yes)  | 同上，只是使用空表达式作为no |
 
+**【备注】**
+- `(?(exp)yes！no)`应为`(?(exp)yes|no)`
+- `(?(name)yes！no)`应为`(?(name)yes|no)` 
