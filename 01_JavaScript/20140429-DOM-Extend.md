@@ -51,25 +51,25 @@ if (document.documentMode > 7) {
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">  
   <title>innerHTML、outerHTML和innerText、outerHTML的区别</title>  
   <script language="JavaScript" type="text/javascript">   
-　　//.innerHTML  
-　　function innerHTMLDemo() {   
-　　　test_id1.innerHTML = "<i><u>设置或获取位于对象起始和结束标签内的 HTML.</u></i>";   
-　　}   
-　　
-　　//.innerText  
-　　function innerTextDemo() {   
-　　　test_id2.innerText = "<i><u>设置或获取位于对象起始和结束标签内的文本.</u></i>";   
-　　}   
-　　
-　　//.outerHTML  
-　　function outerHTMLDemo() {   
-　　　test_id3.outerHTML = "<font size=9pt color=red><i><u>设置或获取对象及其内容的 HTML 形式.</u></i></font>";   
-　　}  
-　　
-　　//.outerText  
-　　function outerTextDemo() {   
-　　　test_id4.outerText = "<br></br><i><u>设置(包括标签)或获取(不包括标签)对象的文本.</u></i>";   
-　　}  
+    //.innerHTML  
+    function innerHTMLDemo() {   
+        test_id1.innerHTML = "<i><u>设置或获取位于对象起始和结束标签内的 HTML.</u></i>";   
+    }   
+    
+    //.innerText  
+    function innerTextDemo() {   
+        test_id2.innerText = "<i><u>设置或获取位于对象起始和结束标签内的文本.</u></i>";   
+    }   
+    
+    //.outerHTML  
+    function outerHTMLDemo() {   
+        test_id3.outerHTML = "<font size=9pt color=red><i><u>设置或获取对象及其内容的 HTML 形式.</u></i></font>";   
+    }  
+    
+    //.outerText  
+    function outerTextDemo() {   
+        test_id4.outerText = "<br></br><i><u>设置(包括标签)或获取(不包括标签)对象的文本.</u></i>";   
+    }  
   </script>   
 </head>   
 <body>   
