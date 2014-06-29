@@ -89,4 +89,4 @@ if (document.documentMode > 7) {
     
 对于一个id为"testdiv"的div来说，outerHTML、innerHTML以及innerTEXT三者的区别可以通过下图展示出来： 
 
-![Alt text](../99_Image/inner-outer-diff.png)
+![Alt text](JavaScriptImages/inner-outer-diff.png)
