@@ -4,7 +4,7 @@ var MAX_RADUIS = 30;
 function getAlphaValue(raduis) {
 	raduis = raduis || MAX_RADUIS;
 
-	// 图片边角椭圆化处理（多个半径）
+	// 传入图片的宽、高和图片边角圆化处理的圆的半径范围
 	function alphasArray(width, height, start, end) {
 		var all = [null],
 			img = gd.create(width, height);
@@ -12,7 +12,7 @@ function getAlphaValue(raduis) {
 		img.filledRectangle(0, 0, width, height, 0x7fffffff);
 		img.filledEllipse(width / 2, height / 2, width, height, 0xff0000);
 
-		// 图片边角椭圆化处理（单个半径）
+		// 传入图片和边角圆化处理的圆的半径
 		function alphaArray(img, r) {
 			var a,
 				b,
