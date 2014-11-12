@@ -1,4 +1,4 @@
-Cookie 与 Session 的区别
+cookie机制和session机制的区别（一）
 =====================
 
 ###1、cookie机制
