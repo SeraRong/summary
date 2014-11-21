@@ -1,4 +1,4 @@
-Sublime Text 快捷键大全
+Sublime2 Text 快捷键大全
 ==============
 
 | 快捷键      |    说明   |
