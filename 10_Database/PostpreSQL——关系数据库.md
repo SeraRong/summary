@@ -213,6 +213,71 @@ ON e.venue_id = v.venue_id;
 
 - 右联接（RIGHT JOIN）
 
+```sql
+SELECT e.title, v.name
+FROM events e RIGHT JOIN venues v
+ON e.venue_id = v.venue_id;
+```
+
+| title | name |
+| :---: | :----: |
+|  | Crystal Ballroom |
+| LARP Club 　　　| Voodoo Donuts |
+
 - 全联接（FULL JOIN）
 
 FULL JOIN，这是LEFT和RIGHT的联合；保证能得到每张表中的所有值，列匹配时就会联接。
+
+```sql
+SELECT e.title, v.name
+FROM events e FULL JOIN venues v
+ON e.venue_id = v.venue_id;
+```
+
+| title | name |
+| :---: | :----: |
+|  | Crystal Ballroom |
+| LARP Club 　　　| Voodoo Donuts |
+| April Fools Day | |
+| Christmas Day | |
+
+###4、使用索引快速查找
+####1）自动在主键上创建索引
+
+运行 CREATE TABLE events 命令时，会出现下面这条消息：
+
+```sql
+CREATE TABLE / PRIMARY KEY will create implicit index "events_pkey" \
+for table "events
+```
+
+- PostpreSQL自动在主键上创建索引，以主键的列值为索引的键，索引的值则指向磁盘的一行。
+- 采用UNIQUE关键字，强制在表中的一列上创建索引。
+
+####2）手动添加哈希索引
+
+每个值必须是唯一的。
+
+```sql
+CREATE INDEX events_title
+ON events USING hash (title);
+```
+
+####3）手动创建B树索引
+
+对于操作符为小于/大于/等于这样的匹配查询，可采用比哈希更为灵活的B树索引。
+
+```sql
+CREATE INDEX events_starts
+ON events USING btree (starts);
+```
+
+4）列出数据模式中所有索引
+
+```sql
+book=# \di
+```
+
+**【注】**
+- 当对列创建一个FOREIGN KEY约束时，PostgreSQL将自动在目标列创建索引。
+- 经常需要在进行联接的列上创建索引，以便加快基于外键的表联接。
